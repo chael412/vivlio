@@ -3,7 +3,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 const Navbar = () => {
 	return (
 		<div>
-			<nav className='bg-white border-gray-200 dark:bg-gray-900'>
+			<nav className='bg-white border-gray-200 dark:bg-gray-900  fixed w-full z-20 top-0 start-0 '>
 				<div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-5 py-1'>
 					<button
 						data-collapse-toggle='navbar-default'

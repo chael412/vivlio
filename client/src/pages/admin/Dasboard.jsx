@@ -1,15 +1,12 @@
 import { BiBuildings } from 'react-icons/bi';
-
 import { GiGraduateCap } from 'react-icons/gi';
 import { FaBook } from 'react-icons/fa';
-
 import { FaUsers } from 'react-icons/fa';
-import 'flowbite';
+import { AiFillHome } from 'react-icons/ai';
 
+import 'flowbite';
 import Navbar from '../../components/admin/Navbar';
 import Banner from '../../components/admin/Banner';
-
-import { AiFillHome } from 'react-icons/ai';
 
 const Dasboard = () => {
 	return (

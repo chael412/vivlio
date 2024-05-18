@@ -25,3 +25,7 @@ Route::get('/attendance', function () {
 Route::get('/students', function () {
     return view('admin.students');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

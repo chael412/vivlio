@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\EmployeeController;
@@ -16,6 +17,9 @@ Route::get('/user', function (Request $request) {
 Route::get('/hello', function () {
     return response()->json(['message' => 'Hello, World!', 'name' => "pogi ako"]);
 });
+
+// ==================================== Authentication ==========================
+Route::resource('auth', AuthController::class);
 
 // ==================================== Student ===================================
 Route::resource('students', StudentController::class);
