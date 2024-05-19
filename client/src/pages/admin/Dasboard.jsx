@@ -5,14 +5,10 @@ import { FaUsers } from 'react-icons/fa';
 import { AiFillHome } from 'react-icons/ai';
 
 import 'flowbite';
-import Navbar from '../../components/admin/Navbar';
-import Banner from '../../components/admin/Banner';
 
 const Dasboard = () => {
 	return (
 		<div>
-			<Navbar />
-			<Banner />
 			<section className='px-5 sm:px-5 md:px-20 lg:px-32 mt-3'>
 				<div className='bg-green-100 h-16 px-5 py-3 shadow-md flex items-center gap-2'>
 					<div className='bg-[#27ae60] w-10 h-10 flex items-center justify-center rounded-md'>

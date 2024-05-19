@@ -31,13 +31,17 @@ const fetchStudents = async () => {
                         <td>${i++}</td>
                         <td>${student.student_no}</td>
                         <td>${fullname}</td>
-                        <td>${course.course_name}</td>
+
                         <td>
                             <i class="table-icon fa-solid fa-eye mx-2" onclick="fetchOneStudent(${
                                 student.id
                             })" data-toggle="tooltip" data-placement="top" title="More Information"></i>
                             <i class="table-icon fa-solid fa-pencil mr-2" data-toggle="tooltip" data-placement="top" title="Edit Information"></i>
                             <i class="table-icon fa-solid fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                        </td>
+                        <td>
+                            <p data-toggle="modal"
+                            data-target="#modalStudAdd">helo</p>
                         </td>
                     </tr>`;
                 tbody.append(row);
