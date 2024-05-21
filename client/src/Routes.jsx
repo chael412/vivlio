@@ -26,7 +26,7 @@ const AppRoutes = () => {
 				path='/admin'
 				element={<AdminTemplate />}>
 				<Route
-					index
+					path='admin'
 					element={<Admin />}
 				/>
 				<Route

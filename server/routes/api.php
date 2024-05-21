@@ -21,7 +21,6 @@ Route::get('/hello', function () {
     return response()->json(['message' => 'Hello, World!', 'name' => "pogi ako"]);
 });
 
-
 // ==================================== Login ===================================
 Route::get('/generateToken', [AdminController::class, 'generateToken']);
 
@@ -31,7 +30,7 @@ Route::resource('admins', AdminController::class);
 // ==================================== Employee ==================================
 Route::resource('employees', EmployeeController::class);
 
-// ==================================== Department ==================================
+// ==================================== Department =================================
 Route::resource('departments', DepartmentController::class);
 
 // ==================================== Student attendance ==========================

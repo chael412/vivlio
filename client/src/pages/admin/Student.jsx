@@ -38,7 +38,7 @@ const Student = () => {
 		}
 	};
 
-	const { data: students } = useQuery({
+	const { data: students, isLoading } = useQuery({
 		queryKey: ['students'],
 		queryFn: fetchStudents,
 	});
@@ -266,45 +266,75 @@ const Student = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{students &&
-										students.map((student, index) => (
-											<tr
-												key={student.id}
-												className='border-b dark:border-gray-700 hover:bg-gray-100'>
-												<td className='px-4 py-3'>{index + 1}</td>
-												<td className='px-4 py-3'>{student.student_no}</td>
-												<td className='px-4 py-3'>{student.user.firstname + ' ' + student.user.middlename + ' ' + student.user.lastname}</td>
-												<td className='px-4 py-3'>{student.user.gender}</td>
-
-												<td className='px-4 py-3'>{student.course.course_name}</td>
-												<td className='px-4 py-3 flex items-center justify-end'>
-													<a
-														onClick={() => {
-															setAction('view');
-															setIsModal(true);
-														}}
-														className='mx-2 font-medium text-blue-600  hover:underline hover:font-semibold'>
-														View
-													</a>
-													<a
-														onClick={() => {
-															setAction('edit');
-															setIsModal(true);
-														}}
-														className='mx-2 font-medium text-blue-600  hover:underline hover:font-semibold'>
-														Edit
-													</a>
-													<a
-														onClick={() => {
-															setAction('delete');
-															setIsModal(true);
-														}}
-														className='mx-1 font-medium text-red-600 hover:underline hover:font-semibold'>
-														Delete
-													</a>
-												</td>
-											</tr>
-										))}
+									{isLoading ? (
+										<>
+											{Array.from({ length: 5 }).map((_, index) => (
+												<tr
+													key={index}
+													className='animate-pulse'>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+													<td className='px-6 py-4'>
+														<div className='h-4 bg-gray-200 rounded'></div>
+													</td>
+												</tr>
+											))}
+										</>
+									) : (
+										students &&
+										students
+											.slice() // Create a shallow copy of the array to avoid mutating the original array
+											.map((student, index) => (
+												<tr
+													key={student.id}
+													className='border-b dark:border-gray-700 hover:bg-gray-100'>
+													<td className='px-4 py-3'>{index + 1}</td>
+													<td className='px-4 py-3'>{student.student_no}</td>
+													<td className='px-4 py-3'>{`${student.user.firstname} ${student.user.middlename} ${student.user.lastname}`}</td>
+													<td className='px-4 py-3'>{student.user.gender}</td>
+													<td className='px-4 py-3'>{student.course.course_name}</td>
+													<td className='px-4 py-3 flex items-center justify-end'>
+														<a
+															onClick={() => {
+																setAction('view');
+																setIsModal(true);
+															}}
+															className='mx-2 font-medium text-blue-600 hover:underline hover:font-semibold'>
+															View
+														</a>
+														<a
+															onClick={() => {
+																setAction('edit');
+																setIsModal(true);
+															}}
+															className='mx-2 font-medium text-blue-600 hover:underline hover:font-semibold'>
+															Edit
+														</a>
+														<a
+															onClick={() => {
+																setAction('delete');
+																setIsModal(true);
+															}}
+															className='mx-1 font-medium text-red-600 hover:underline hover:font-semibold'>
+															Delete
+														</a>
+													</td>
+												</tr>
+											))
+									)}
 								</tbody>
 							</table>
 						</div>

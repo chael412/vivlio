@@ -1,13 +1,51 @@
 import { useDataStore } from '../context/DataStoreContext';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import DatePicker from 'react-date-picker';
+
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Modal = ({ action }) => {
 	const { isModal, setIsModal } = useDataStore();
-	const [value, onChange] = useState(new Date());
+	const [studentno, setStudentno] = useState('');
+	const [course, setCourse] = useState('');
+	const [firstname, setFirstname] = useState('');
+	const [middlename, setMiddlename] = useState('');
+	const [lastname, setLastname] = useState('');
+	const [birthdate, setBirthdate] = useState('');
+	const [gender, setGender] = useState('');
+	const [email, setEmail] = useState('');
+
+	const createStudent = async () => {
+		try {
+			const params = {
+				student_no: studentno,
+				cs_id: course,
+				firstname: firstname,
+				middlename: middlename,
+				lastname: lastname,
+				gender: gender,
+				birthdate: birthdate,
+				email: email,
+			};
+
+			console.log(params);
+			const { data } = await axios.post('http://127.0.0.1:8000/api/students', params);
+			if (data) {
+				toast.success('Student created successfully.');
+				await new Promise((resolve) => setTimeout(resolve, 2500));
+				setIsModal(false);
+			} else {
+				toast.success('Student failed created.');
+				setIsModal(false);
+			}
+		} catch (error) {
+			console.error('Error Create:', error);
+			toast.error('Error creating student');
+		}
+	};
 
 	return (
 		<div
@@ -47,17 +85,58 @@ const Modal = ({ action }) => {
 					</div>
 
 					{action == 'add' ? (
-						<div className='p-4 md:p-5 space-y-4'>
+						<div className='p-4 md:p-5 space-y-2'>
+							<div className='grid grid-cols-2 gap-4'>
+								<div>
+									<label
+										htmlFor='student_no'
+										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+										Student No.
+									</label>
+									<input
+										onChange={(e) => {
+											setStudentno(e.target.value);
+										}}
+										type='text'
+										id='firstname'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+									/>
+								</div>
+								<div>
+									<label
+										htmlFor='small'
+										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+										Course
+									</label>
+									<select
+										onChange={(e) => setCourse(e.target.value)}
+										defaultValue={'DEFAULT'}
+										id='small'
+										className='block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700
+										dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+										<option
+											value='DEFAULT'
+											disabled>
+											------ Select a course------
+										</option>
+										<option value='1'>BSIT</option>
+										<option value='3'>BSA</option>
+									</select>
+								</div>
+							</div>
 							<div className='grid grid-cols-2 gap-4'>
 								<div>
 									<label
 										htmlFor='email'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your email1
+										Firstname
 									</label>
 									<input
-										type='email'
-										id='small-input'
+										onChange={(e) => {
+											setFirstname(e.target.value);
+										}}
+										type='text'
+										id='firstname'
 										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 									/>
 								</div>
@@ -65,10 +144,41 @@ const Modal = ({ action }) => {
 									<label
 										htmlFor='email'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your email2
+										Middlename
 									</label>
 									<input
-										type='email'
+										onChange={(e) => {
+											setMiddlename(e.target.value);
+										}}
+										type='text'
+										id='small-input'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+									/>
+								</div>
+							</div>
+							<div className='grid grid-cols-2 gap-4'>
+								<div>
+									<label
+										htmlFor='lastname'
+										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+										Lastname
+									</label>
+									<input
+										onChange={(e) => {
+											setLastname(e.target.value);
+										}}
+										type='text'
+										id='lastname'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+									/>
+								</div>
+								<div>
+									<label htmlFor=''>Birthdate</label>
+									<input
+										onChange={(e) => {
+											setBirthdate(e.target.value);
+										}}
+										type='date'
 										id='small-input'
 										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 									/>
@@ -76,36 +186,36 @@ const Modal = ({ action }) => {
 							</div>
 							<div className='grid sm:grid-cols-2 grid-cols-1 gap-4'>
 								<div>
-									<label htmlFor=''>Date</label>
-									<div>
-										<DatePicker
-											className='block w-48 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-											onChange={(date) => {
-												onChange(date);
-												console.log('Selected date:', date);
-											}}
-											value={value}
-										/>
-									</div>
-								</div>
-
-								<div>
 									<label
 										htmlFor='small'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Small select4
+										Gender
 									</label>
 									<select
+										defaultValue={'DEFAULT'}
 										id='small'
-										className='block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-										<option
-											selected
-											disabled>
-											------ Select a gender------
-										</option>
-										<option value='male'>Male</option>
-										<option value='female'>Female</option>
+										className='block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+										value={gender}
+										onChange={(e) => setGender(e.target.value)}>
+										<option defaultValue={'DEFAULT'}>------ Select a gender ------</option>
+										<option value='Male'>Male</option>
+										<option value='Female'>Female</option>
 									</select>
+								</div>
+								<div>
+									<label
+										htmlFor='student_no'
+										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+										Email
+									</label>
+									<input
+										onChange={(e) => {
+											setEmail(e.target.value);
+										}}
+										type='email'
+										id='small-input'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+									/>
 								</div>
 							</div>
 						</div>
@@ -113,38 +223,33 @@ const Modal = ({ action }) => {
 
 					{action == 'view' ? (
 						<div className='p-4 md:p-5 space-y-4'>
-							<form
-								className='space-y-4'
-								action='#'>
-								<div>
-									{action}
-									<label
-										htmlFor='email'
-										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your email view
-									</label>
-								</div>
-								<div>
-									<label
-										htmlFor='password'
-										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your password
-									</label>
-								</div>
-							</form>
+							<div>
+								{action}
+								<label
+									htmlFor='email'
+									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+									Your email view
+								</label>
+							</div>
+							<div>
+								<label
+									htmlFor='password'
+									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+									Your password
+								</label>
+							</div>
 						</div>
 					) : null}
 
 					<div className='flex items-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b dark:border-gray-600'>
 						<button
-							data-modal-hide='large-modal'
+							onClick={() => createStudent()}
 							type='button'
 							className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
 							Register
 						</button>
 						<button
 							onClick={() => setIsModal(false)}
-							data-modal-hide='large-modal'
 							type='button'
 							className='py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'>
 							Cancel

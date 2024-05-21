@@ -13,9 +13,13 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with('user', 'course')->get();
+        $students = Student::with('user', 'course')
+            ->orderBy('created_at', 'desc') // Order by created_at, newest first
+            ->get();
+
         return response()->json(['students' => $students], 200);
     }
+
 
 
     public function store(Request $request)
