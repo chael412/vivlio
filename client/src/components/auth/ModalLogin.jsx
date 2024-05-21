@@ -25,7 +25,13 @@ const ModalLogin = () => {
 
 			toast.success('Login successfully');
 
-			navigate('/dashboard');
+			// Wait for toast to be displayed (You can adjust the duration as needed)
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+
+			// Navigate to dashboard
+			navigate('/admin/dashboard');
+
+			window.location.reload();
 
 			return;
 		} catch (error) {

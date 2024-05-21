@@ -33,7 +33,7 @@ const Navbar = () => {
 						<ul className='flex  flex-col md:flex-row font-semibold mt-0  text-md space-x-4 rtl:space-x-reverse'>
 							<li className='block px-2 md:border-l-[0.5px] border-r-[0.5px] border-gray-400 py-2 '>
 								<Link
-									to='/dashboard'
+									to='/admin/dashboard'
 									className='text-gray-600 dark:text-white hover:underline hover:font-bold hover:text-green-500'
 									aria-current='page'>
 									Dashboard
@@ -114,7 +114,7 @@ const Navbar = () => {
 													</li>
 													<li>
 														<Link
-															to='/student'
+															to='/admin/student'
 															className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>
 															Students
 														</Link>
@@ -237,7 +237,7 @@ const Navbar = () => {
 
 									<li>
 										<a
-											href='#'
+											href='/'
 											className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'>
 											Sign out
 										</a>

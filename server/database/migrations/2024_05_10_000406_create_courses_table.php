@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('course_name', 100);
             $table->string('acro', 50)->nullable();
+            $table->timestamps();
         });
     }
 

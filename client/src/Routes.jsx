@@ -7,39 +7,47 @@ import Dasboard from './pages/admin/Dasboard';
 import Admin from './pages/admin/Admin';
 import Student from './pages/admin/Student';
 import Login from './pages/admin/Login';
-import Template from './layouts/Template';
+import AdminTemplate from './layouts/Template';
+import DefaultTemplate from './layouts/DefaultTemplate';
 
 const AppRoutes = () => {
 	return (
 		<Routes>
-			<Route
-				path='/'
-				element={<Template />}>
-				<Route
-					path='*'
-					element={<NotFoundPage />}
-				/>
+			{/* Main routes */}
+			<Route element={<DefaultTemplate />}>
 				<Route
 					path='/'
 					element={<HomePage />}
 				/>
+			</Route>
+
+			{/* Admin routes */}
+			<Route
+				path='/admin'
+				element={<AdminTemplate />}>
 				<Route
-					path='/dashboard'
-					element={<Dasboard />}
-				/>
-				<Route
-					path='/admin'
+					index
 					element={<Admin />}
 				/>
 				<Route
-					path='/student'
+					path='dashboard'
+					element={<Dasboard />}
+				/>
+				<Route
+					path='student'
 					element={<Student />}
 				/>
 				<Route
-					path='/login'
+					path='login'
 					element={<Login />}
 				/>
 			</Route>
+
+			{/* Catch-all route */}
+			<Route
+				path='*'
+				element={<NotFoundPage />}
+			/>
 		</Routes>
 	);
 };

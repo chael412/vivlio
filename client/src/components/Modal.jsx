@@ -1,8 +1,13 @@
 import { useDataStore } from '../context/DataStoreContext';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
 const Modal = ({ action }) => {
 	const { isModal, setIsModal } = useDataStore();
+	const [value, onChange] = useState(new Date());
 
 	return (
 		<div
@@ -10,12 +15,15 @@ const Modal = ({ action }) => {
 			tabIndex='-1'
 			className={` ${
 				isModal ? '' : 'hidden'
-			} backdrop-blur flex justify-center inset-0 items-center fixed z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+			} backdrop-opacity-30 backdrop-invert bg-white/5  flex justify-center inset-0 items-center fixed z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
 			<div className='relative w-full max-w-4xl max-h-full'>
-				<div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
-					<div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600'>
-						<h3 className='text-xl font-medium text-gray-900 dark:text-white'>{action}</h3>
-						{action == 'add' ? <p>helow</p> : null}
+				<div className='relative bg-white rounded-sm shadow dark:bg-gray-700'>
+					<div className='flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600'>
+						<h3 className='text-xl font-medium text-gray-900 dark:text-white'>
+							{action == 'add' ? <p>Register Student</p> : null}
+							{action == 'view' ? <p>View Student</p> : null}
+							{action == 'edit' ? <p>Edit Student</p> : null}
+						</h3>
 						<button
 							type='button'
 							className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white'
@@ -40,41 +48,66 @@ const Modal = ({ action }) => {
 
 					{action == 'add' ? (
 						<div className='p-4 md:p-5 space-y-4'>
-							<form
-								className='space-y-4'
-								action='#'>
+							<div className='grid grid-cols-2 gap-4'>
 								<div>
-									{action}
 									<label
 										htmlFor='email'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your email
+										Your email1
 									</label>
 									<input
 										type='email'
-										name='email'
-										id='email'
-										className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-										placeholder='name@company.com'
-										required
+										id='small-input'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 									/>
 								</div>
 								<div>
 									<label
-										htmlFor='password'
+										htmlFor='email'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-										Your password
+										Your email2
 									</label>
 									<input
-										type='password'
-										name='password'
-										id='password'
-										placeholder='••••••••'
-										className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-										required
+										type='email'
+										id='small-input'
+										className='block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
 									/>
 								</div>
-							</form>
+							</div>
+							<div className='grid sm:grid-cols-2 grid-cols-1 gap-4'>
+								<div>
+									<label htmlFor=''>Date</label>
+									<div>
+										<DatePicker
+											className='block w-48 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+											onChange={(date) => {
+												onChange(date);
+												console.log('Selected date:', date);
+											}}
+											value={value}
+										/>
+									</div>
+								</div>
+
+								<div>
+									<label
+										htmlFor='small'
+										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+										Small select4
+									</label>
+									<select
+										id='small'
+										className='block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+										<option
+											selected
+											disabled>
+											------ Select a gender------
+										</option>
+										<option value='male'>Male</option>
+										<option value='female'>Female</option>
+									</select>
+								</div>
+							</div>
 						</div>
 					) : null}
 
@@ -107,13 +140,14 @@ const Modal = ({ action }) => {
 							data-modal-hide='large-modal'
 							type='button'
 							className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
-							I accept
+							Register
 						</button>
 						<button
+							onClick={() => setIsModal(false)}
 							data-modal-hide='large-modal'
 							type='button'
 							className='py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'>
-							Decline
+							Cancel
 						</button>
 					</div>
 				</div>

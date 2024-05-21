@@ -1,6 +1,6 @@
 const Subbar = () => {
 	return (
-		<div className='bg-[#006331] h-[100px] lg:h-[135px] mt-[5px] mb-1'>
+		<div className='bg-[#006331] h-[100px] lg:h-[135px] '>
 			<div className='px-10 lg:px-16 flex items-center justify-between'>
 				<div className='flex items-center text-white'>
 					<img
