@@ -6,6 +6,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import Dasboard from './pages/admin/Dasboard';
 import Student from './pages/admin/Student';
 import Admin from './pages/admin/Admin';
+import Catalog from './pages/admin/Catalog';
 import Course from './pages/admin/Course';
 import AdminTemplate from './layouts/Template';
 import DefaultTemplate from './layouts/DefaultTemplate';
@@ -40,6 +41,10 @@ const AppRoutes = () => {
 				<Route
 					path='course'
 					element={<Course />}
+				/>
+				<Route
+					path='catalog'
+					element={<Catalog />}
 				/>
 			</Route>
 
