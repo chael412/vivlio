@@ -14,12 +14,11 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::with('user', 'course')
-            ->orderBy('created_at', 'desc') // Order by created_at, newest first
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json(['students' => $students], 200);
     }
-
 
 
     public function store(Request $request)
@@ -35,6 +34,7 @@ class StudentController extends Controller
                 'email' => 'required|email|unique:users,email',
                 'student_no' => 'required|string|unique:students,student_no',
                 'cs_id' => 'required|exists:courses,id',
+                'user_type' => 'required|string',
             ]);
 
             // Create a new user
@@ -83,6 +83,7 @@ class StudentController extends Controller
                 'email' => 'required|email|unique:users,email,' . $user->id,
                 'student_no' => 'required|string|unique:students,student_no,' . $student->id,
                 'cs_id' => 'required|exists:courses,id',
+                'user_type' => 'required|string',
             ]);
 
             // Update the user

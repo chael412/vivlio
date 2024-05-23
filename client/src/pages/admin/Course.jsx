@@ -2,7 +2,7 @@ import 'flowbite';
 import axios from 'axios';
 import { AiFillHome } from 'react-icons/ai';
 
-import Modal from '../../components/modal/StudentModal';
+import Modal from '../../components/modal/CourseModal';
 
 import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useDataStore } from '../../context/DataStoreContext';
@@ -11,13 +11,13 @@ import { useNavigate } from 'react-router-dom';
 
 const queryClient = new QueryClient();
 
-const Student = () => {
+const Course = () => {
 	const navigate = useNavigate();
 
 	const { setIsModal } = useDataStore();
 	const [action, setAction] = useState('');
 
-	const fetchStudents = async () => {
+	const fetchCourses = async () => {
 		const token = localStorage.getItem('token');
 
 		if (!token) {
@@ -27,29 +27,27 @@ const Student = () => {
 		}
 
 		try {
-			const { data } = await axios.get('http://127.0.0.1:8000/api/students', {
+			const { data } = await axios.get('http://127.0.0.1:8000/api/courses', {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			return data.students;
+
+			return data.courses;
 		} catch (error) {
-			console.error('Error fetching students:', error);
+			console.error('Error fetching courses:', error);
 		}
 	};
 
-	const { data: students, isLoading } = useQuery({
-		queryKey: ['students'],
-		queryFn: fetchStudents,
+	const { data: courses, isLoading } = useQuery({
+		queryKey: ['courses'],
+		queryFn: fetchCourses,
 	});
 
 	return (
 		<div>
 			<div className='flex justify-center items-center'>
-				<Modal
-					action={action}
-					fetchStudents={fetchStudents}
-				/>
+				<Modal action={action} />
 			</div>
 
 			<section className='px-5 sm:px-5  lg:px-24 mt-3'>
@@ -58,7 +56,7 @@ const Student = () => {
 						<AiFillHome className='text-white text-3xl' />
 					</div>
 					<div>
-						<p className='text-green-700 font-bold text-base'>Students</p>
+						<p className='text-green-700 font-bold text-base'>Courses</p>
 					</div>
 				</div>
 			</section>
@@ -119,7 +117,7 @@ const Student = () => {
 											d='M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z'
 										/>
 									</svg>
-									Register Student
+									Add Course
 								</button>
 								<div className='flex items-center space-x-3 w-full md:w-auto'>
 									<button
@@ -236,33 +234,23 @@ const Student = () => {
 									<tr>
 										<th
 											scope='col'
-											className='px-4 py-3'>
+											className='px-4 py-3 w-[7%]'>
 											#
-										</th>
-										<th
-											scope='col'
-											className='px-4 py-3'>
-											Student No.
-										</th>
-										<th
-											scope='col'
-											className='px-4 py-3'>
-											Name
-										</th>
-										<th
-											scope='col'
-											className='px-4 py-3'>
-											Gender
-										</th>
-										<th
-											scope='col'
-											className='px-4 py-3'>
-											Course
 										</th>
 
 										<th
 											scope='col'
-											className='px-4 py-3'>
+											className='px-4 py-3 w-[50%]'>
+											Course Name
+										</th>
+										<th
+											scope='col'
+											className='px-4 py-3 w-[23%]'>
+											Acronym
+										</th>
+										<th
+											scope='col'
+											className='px-4 py-3 w-[15%]'>
 											<span className='sr-only'>Actions</span>
 										</th>
 									</tr>
@@ -286,58 +274,47 @@ const Student = () => {
 													<td className='px-6 py-4'>
 														<div className='h-4 bg-gray-200 rounded'></div>
 													</td>
-													<td className='px-6 py-4'>
-														<div className='h-4 bg-gray-200 rounded'></div>
-													</td>
-													<td className='px-6 py-4'>
-														<div className='h-4 bg-gray-200 rounded'></div>
-													</td>
 												</tr>
 											))}
 										</>
+									) : courses && courses.length > 0 ? (
+										courses.slice().map((course, index) => (
+											<tr
+												key={course.id}
+												className='border-b dark:border-gray-700 hover:bg-gray-100'>
+												<td className='px-4 py-3'>{index + 1}</td>
+
+												<td className='px-4 py-3'>{course.course_name}</td>
+												<td className='px-4 py-3'>{course.acro}</td>
+
+												<td className='px-4 py-3 flex items-center justify-end'>
+													<a
+														onClick={() => {
+															setAction('edit');
+															setIsModal(true);
+														}}
+														className='mx-2 font-medium text-blue-600 hover:underline hover:font-semibold'>
+														Edit
+													</a>
+													<a
+														onClick={() => {
+															setAction('delete');
+															setIsModal(true);
+														}}
+														className='mx-1 font-medium text-red-600 hover:underline hover:font-semibold'>
+														Delete
+													</a>
+												</td>
+											</tr>
+										))
 									) : (
-										students &&
-										students
-											.slice() // Create a shallow copy of the array to avoid mutating the original array
-											.map((student, index) => (
-												<tr
-													key={student.id}
-													className='border-b dark:border-gray-700 hover:bg-gray-100'>
-													<td className='px-4 py-3'>{index + 1}</td>
-													<td className='px-4 py-3'>{student.student_no}</td>
-													<td className='px-4 py-3'>
-														{`${student.user.lastname} ${student.user.firstname} ${student.user.middlename || ''}`} 
-													</td>
-													<td className='px-4 py-3'>{student.user.gender}</td>
-													<td className='px-4 py-3'>{student.course.course_name}</td>
-													<td className='px-4 py-3 flex items-center justify-end'>
-														<a
-															onClick={() => {
-																setAction('view');
-																setIsModal(true);
-															}}
-															className='cursor-pointer mx-2 font-medium text-blue-600 hover:underline hover:font-semibold'>
-															View
-														</a>
-														<a
-															onClick={() => {
-																setAction('edit');
-																setIsModal(true);
-															}}
-															className='cursor-pointer mx-2 font-medium text-blue-600 hover:underline hover:font-semibold'>
-															Edit
-														</a>
-														<a
-															onClick={() => {
-																setAction('delete');
-																setIsModal(true);
-															}}
-															className='cursor-pointer mx-1 font-medium text-red-600 hover:underline hover:font-semibold'>
-															Delete
-														</a>
-													</td>
-												</tr>
-											))
+										<tr>
+											<td
+												className='px-6 py-4 text-center text-red-600 font-semibold text-xl'
+												colSpan='6'>
+												No records found
+											</td>
+										</tr>
 									)}
 								</tbody>
 							</table>
@@ -437,7 +414,7 @@ const Student = () => {
 
 const App = () => (
 	<QueryClientProvider client={queryClient}>
-		<Student />
+		<Course />
 	</QueryClientProvider>
 );
 

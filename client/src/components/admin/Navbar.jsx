@@ -85,11 +85,11 @@ const Navbar = () => {
 													className='py-2 text-sm text-gray-700 dark:text-gray-200'
 													aria-labelledby='doubleDropdownButton'>
 													<li>
-														<a
-															href='#'
+														<Link
+															to='/admin/admin'
 															className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>
 															Admins
-														</a>
+														</Link>
 													</li>
 													<li>
 														<a

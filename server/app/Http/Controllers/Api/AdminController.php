@@ -35,13 +35,13 @@ class AdminController extends Controller
     public function index()
     {
         try {
-            $admins = User::all();
+            $admins = User::where('user_type', 'admin')->get();
             return response()->json(['admins' => $admins], 200);
-
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
         }
     }
+
 
 
     public function store(Request $request)

@@ -4,9 +4,9 @@ import HomePage from './pages/default/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import Dasboard from './pages/admin/Dasboard';
-import Admin from './pages/admin/Admin';
 import Student from './pages/admin/Student';
-import Login from './pages/admin/Login';
+import Admin from './pages/admin/Admin';
+import Course from './pages/admin/Course';
 import AdminTemplate from './layouts/Template';
 import DefaultTemplate from './layouts/DefaultTemplate';
 
@@ -26,20 +26,20 @@ const AppRoutes = () => {
 				path='/admin'
 				element={<AdminTemplate />}>
 				<Route
-					path='admin'
-					element={<Admin />}
-				/>
-				<Route
 					path='dashboard'
 					element={<Dasboard />}
+				/>
+				<Route
+					path='admin'
+					element={<Admin />}
 				/>
 				<Route
 					path='student'
 					element={<Student />}
 				/>
 				<Route
-					path='login'
-					element={<Login />}
+					path='course'
+					element={<Course />}
 				/>
 			</Route>
 

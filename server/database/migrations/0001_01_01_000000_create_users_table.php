@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('photo')->nullable();
             $table->string('email', 255)->unique();
             $table->string('password')->nullable();
+            $table->enum('user_type', ['admin', 'librarian', 'staff', 'faculty', 'student', 'visitor']);
             $table->timestamps();
         });
 

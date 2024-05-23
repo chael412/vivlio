@@ -1,13 +1,13 @@
-import { useDataStore } from '../context/DataStoreContext';
+import { useDataStore } from '../../context/DataStoreContext';
 import PropTypes from 'prop-types';
 
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const Modal = ({ action }) => {
+const StudentModal = ({ action, fetchStudents }) => {
 	const { isModal, setIsModal } = useDataStore();
 	const [studentno, setStudentno] = useState('');
 	const [course, setCourse] = useState('');
@@ -17,6 +17,9 @@ const Modal = ({ action }) => {
 	const [birthdate, setBirthdate] = useState('');
 	const [gender, setGender] = useState('');
 	const [email, setEmail] = useState('');
+	const [courses, setCourses] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	const createStudent = async () => {
 		try {
@@ -29,14 +32,19 @@ const Modal = ({ action }) => {
 				gender: gender,
 				birthdate: birthdate,
 				email: email,
+				user_type: 'student',
 			};
 
-			console.log(params);
+			console.log('Params:', params);
 			const { data } = await axios.post('http://127.0.0.1:8000/api/students', params);
 			if (data) {
 				toast.success('Student created successfully.');
 				await new Promise((resolve) => setTimeout(resolve, 2500));
-				setIsModal(false);
+				const reloadStudents = await fetchStudents();
+				if (reloadStudents) {
+					setIsModal(false);
+					window.location.reload();
+				}
 			} else {
 				toast.success('Student failed created.');
 				setIsModal(false);
@@ -46,6 +54,21 @@ const Modal = ({ action }) => {
 			toast.error('Error creating student');
 		}
 	};
+
+	useEffect(() => {
+		const fetchCourses = async () => {
+			try {
+				const { data } = await axios.get('http://127.0.0.1:8000/api/courses');
+				setCourses(data.courses);
+				setLoading(false);
+			} catch (error) {
+				setError(error);
+				setLoading(false);
+			}
+		};
+
+		fetchCourses();
+	}, []);
 
 	return (
 		<div
@@ -104,24 +127,34 @@ const Modal = ({ action }) => {
 								</div>
 								<div>
 									<label
-										htmlFor='small'
+										htmlFor='course'
 										className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
 										Course
 									</label>
-									<select
-										onChange={(e) => setCourse(e.target.value)}
-										defaultValue={'DEFAULT'}
-										id='small'
-										className='block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700
-										dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-										<option
-											value='DEFAULT'
-											disabled>
-											------ Select a course------
-										</option>
-										<option value='1'>BSIT</option>
-										<option value='3'>BSA</option>
-									</select>
+									{loading ? (
+										<p>Loading...</p>
+									) : error ? (
+										<p>Error loading courses</p>
+									) : (
+										<select
+											onChange={(e) => setCourse(e.target.value)}
+											defaultValue={'DEFAULT'}
+											id='course'
+											className='block w-full p-1 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+											<option
+												value='DEFAULT'
+												disabled>
+												------ Select a course ------
+											</option>
+											{courses.map((course) => (
+												<option
+													key={course.id}
+													value={course.id}>
+													{course.course_name}
+												</option>
+											))}
+										</select>
+									)}
 								</div>
 							</div>
 							<div className='grid grid-cols-2 gap-4'>
@@ -261,8 +294,9 @@ const Modal = ({ action }) => {
 	);
 };
 
-Modal.propTypes = {
+StudentModal.propTypes = {
 	action: PropTypes.string.isRequired,
+	fetchStudents: PropTypes.func.isRequired,
 };
 
-export default Modal;
+export default StudentModal;
